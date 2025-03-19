@@ -1,0 +1,50 @@
+﻿@page
+@model PRN221_BirthdayBookingParty.Pages.HostManagementModel
+@{
+    var isAdmin = HttpContext.Session.Keys.Contains("ADMIN");
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Host Management</h1>
+    <div class="row justify-content-center">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Telephone</th>
+                            <th>Password</th>
+                            <th>Email Address</th>
+                            <th>Birthday</th>
+                            <th>Status</th>
+                            @if (isAdmin)
+                            {
+                                    <th colspan="2">Action</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var host in Model.Users)
+                        {
+                                <tr>
+                                    <td>@host.FullName</td>
+                                    <td>@host.Phone</td>
+                                    <th>@host.Password</th>
+                                    <td>@host.Email</td>
+                                    <td>@host.Birthday</td>
+                                    <td>@host.Status</td>
+                                @if (isAdmin)
+                                {
+                                            <td><a class="btn btn-primary" asp-page="/HostUpdate" asp-route-id="@host.UserId">Update</a></td>
+                                            <td><a class="btn btn-danger" asp-page="/HostDelete" asp-route-id="@host.UserId">Delete</a></td>
+                                }
+                                </tr>
+                        }
+                    </tbody>
+                </table>
+                <a class="btn btn-primary" asp-page="/HostCreate">Create</a>
+            </div>
+        </div>
+    </div>
+</div>

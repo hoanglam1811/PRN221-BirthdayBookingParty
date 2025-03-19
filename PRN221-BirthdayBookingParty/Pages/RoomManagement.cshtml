@@ -1,0 +1,49 @@
+﻿@page
+@model PRN221_BirthdayBookingParty.Pages.RoomManagementModel
+@{
+    var isHost = HttpContext.Session.Keys.Contains("HOST");
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Room List</h1>
+    <div class="row justify-content-center">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                                <th>Room Number</th>
+                                <th>Capacity</th>
+                                <th>RoomStatus</th>
+                                <th>Price</th>
+                            @if (isHost)
+                            {
+                                    <th colspan="2">Action</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var room in Model.Rooms.Where(r => r.RoomStatus != "Deleted").ToList())
+                        {
+                                <tr>
+                                    <td>@room.RoomId</td>
+                                    <td>@room.Capacity</td>
+                                    <td>@room.RoomStatus</td>
+                                    <td>@room.RoomPrice</td>
+                                @if (isHost)
+                                {
+                                            <td><a class="btn btn-primary" asp-page="/RoomUpdate" asp-route-id="@room.RoomId">Update</a></td>
+                                            <td><a class="btn btn-danger" asp-page="/RoomDelete" asp-route-id="@room.RoomId">Delete</a></td>
+                                }
+                                </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (isHost)
+                {
+                    <a class="btn btn-primary" asp-page="/RoomCreate">Create</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

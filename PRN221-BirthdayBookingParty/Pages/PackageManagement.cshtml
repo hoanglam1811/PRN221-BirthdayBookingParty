@@ -1,0 +1,49 @@
+﻿@page
+@model PRN221_BirthdayBookingParty.Pages.PackageManagementModel
+@{
+    var isHost = HttpContext.Session.Keys.Contains("HOST");
+    var isCustomer = HttpContext.Session.Keys.Contains("CUSTOMER");
+    var packageIndex = 1;
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Package List</h1>
+    <div class="row justify-content-center">
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            @if (isHost)
+                            {
+                                    <th colspan="2">Action</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var package in Model.Packages)
+                        {
+                                <tr>
+                                    <td>@(packageIndex++)</td>
+                                    <td>@package.PackageType</td>
+                                    <td>@package.PackageName</td>
+                                @if (isHost)
+                                {
+                                            <td><a class="btn btn-primary" asp-page="/PackageUpdate" asp-route-id="@package.PackageId">Update</a></td>
+                                            <td><a class="btn btn-danger" asp-page="/PackageDelete" asp-route-id="@package.PackageId">Delete</a></td>
+                                }
+                                </tr>
+                        }
+                    </tbody>
+                </table>
+                    @if (isHost)
+                    {
+                        <a class="btn btn-primary" asp-page="/PackageCreate">Create</a>
+                    }
+            </div>
+        </div>
+    </div>
+</div>
+}
